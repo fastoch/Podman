@@ -65,15 +65,6 @@ And as a **nushell** hipster, I have to show off and detect columns: `podman mac
 - To search for images: `podman search <imageName>`. For example: `podman search nginx`
 - We can filter the results to only output official images: `podman search nginx --filter=is-official`
 
-## Running our first podman container
-
-- `podman run -dt -p 8080:80 docker.io/library/nginx`
-  - open a browser and head over to localhost:8080, you should see the Nginx web server running
-  - the `-dt` flag is for 'detached' mode with port mapping.
-  - It would be `portman run -d` without port mapping.
- 
-Run `podman ps` to show a list of running containers. And `podman ps -a` to show all containers.
-
 ---
 
 ## About Nushell
@@ -94,4 +85,17 @@ To set Nushell as your default shell in Windows Terminal:
 
 ---
 
-@3/12
+## Running our first podman container
+
+- `podman run -d -p 8080:80 docker.io/library/nginx`
+  - open a browser and head over to localhost:8080, you should see the Nginx web server running
+  - the `-d` flag is for running the container 'detached' mode, so we can keep using the terminal
+ 
+Run `podman ps` to show a list of running containers. And `podman ps -a` to show all containers.  
+Stop a container via `podman stop <containerName>`.  
+
+- `podman top <containerName>` shows the current processes running inside a container and how much resources they're consuming 
+
+
+
+@6/12
