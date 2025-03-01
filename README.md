@@ -43,10 +43,12 @@ However, Podman is **flexible** and allows users to change the runtime if desire
 
 ---
 
-# Starting to use Podman
+# Starting to use a podman machine
 
 Containers run natively on Linux systems, but running Podman on Windows requires WSL2 to be enabled.   
 https://github.com/fastoch/WSL2  
+
+## Init & start 
 
 The first thing you want to do, if you're not running Linux, is creating a podman machine: `podman machine init`  
 Once it's initiated, you can start it: `podman machine start`  
@@ -55,10 +57,22 @@ By default, podman machines are configured in **rootless** mode.
 If your containers require root permissions (e.g. ports < 1024), or if you run into compatibility issues with non-podman clients, 
 you can switch using the following command: `podman machine set --rootful`  
 
-- `podman machine ls` provides the list of running podman machines.  
-And as a nushell hipster, I have to show off and detect columns: `podman machine ls | detect columns`
+## Useful podman commands
 
-- To search for images: `podman search <image>`. For example: `podman search nginx`
+- `podman machine ls` provides the list of the podman machines we have created.  
+And as a **nushell** hipster, I have to show off and detect columns: `podman machine ls | detect columns`
+
+- To search for images: `podman search <imageName>`. For example: `podman search nginx`
+- We can filter the results to only output official images: `podman search nginx --filter=is-official`
+
+## Running our first podman container
+
+- `podman run -dt -p 8080:80 docker.io/library/nginx`
+  - open a browser and head over to localhost:8080, you should see the Nginx web server running
+  - the `-dt` flag is for 'detached' mode with port mapping.
+  - It would be `portman run -d` without port mapping.
+ 
+Run `podman ps` to show a list of running containers. And `podman ps -a` to show all containers.
 
 ---
 
