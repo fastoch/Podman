@@ -67,7 +67,7 @@ And as a **nushell** hipster, I have to show off and detect columns: `podman mac
 
 ---
 
-## About Nushell
+### About Nushell
 
 - to install it on Windows, open a command prompt or PowerShell and run `winget install nushell`
 - After installation, you can launch Nushell by typing `nu` in your command prompt or PowerShell
@@ -96,6 +96,27 @@ Stop a container via `podman stop <containerName>`.
 
 - `podman top <containerName>` shows the current processes running inside a container and how much resources they're consuming 
 
+---
+
+# An important differentiator 
+
+While Docker needs its Docker socket to run, which is also running as root, Podman is **daemonless** and **rootless**.  
+
+If you run podman containers and look for processes mentioning 'podman' via `ps | find podman`, you'll see there are none.  
+On the opposite, Docker needs a bunch of processes to run containers.  
+
+If you run `ls -l /var/run/docker.sock | select user`, you can verify that the user for the docker socket is root.  
+
+# Podman's best selling point
+
+As its name indicates, Podman lets you gather multiple containers in **pods** and have them run together, which is something Docker can't do.  
+
+To access these pods through the CLI, podman comes with `podman pod`, which we can then run `ps` on to grab a list of running pods:  
+`podman pod ps | detect columns`  
+
+Let's create a pod and name it
 
 
-@6/12
+
+
+@7/12
