@@ -100,23 +100,56 @@ Stop a container via `podman stop <containerName>`.
 
 # An important differentiator 
 
-While Docker needs its Docker socket to run, which is also running as root, Podman is **daemonless** and **rootless**.  
+While Docker needs its Docker socket to run, which is running as root, Podman is **daemonless** and **rootless**.  
+If you run `ls -l /var/run/docker.sock | select user`, you can verify that the user for the docker socket is root.  
 
 If you run podman containers and look for processes mentioning 'podman' via `ps | find podman`, you'll see there are none.  
 On the opposite, Docker needs a bunch of processes to run containers.  
 
-If you run `ls -l /var/run/docker.sock | select user`, you can verify that the user for the docker socket is root.  
+---
 
 # Podman's best selling point
 
 As its name indicates, Podman lets you gather multiple containers in **pods** and have them run together, which is something Docker can't do.  
 
-To access these pods through the CLI, podman comes with `podman pod`, which we can then run `ps` on to grab a list of running pods:  
-`podman pod ps | detect columns`  
+To access these pods through the CLI, podman comes with the `podman pod` command.  
+The `podman pod ps` command can be used to list information about pods we have created.
 
-Let's create a pod and name it
+## Our first podman pod
 
+Let's create a pod and name it 'webapp': `podman pod create --name webapp` (requires your podman machine to be started)  
+![image](https://github.com/user-attachments/assets/583d766b-f4f2-4db7-b0ef-054a4b2e2f97)  
 
+You can notice that the pod is already running something, despite you haven't told it to run anything...  
+That's because every pod, by default, runs an internal **infra container**.  
+This infra container is a lightweight container used to **coordinate the shared kernel namespace** of a pod.  
+
+## The infra container
+
+The infra container serves several important purposes:
+- It holds the namespaces associated with the pod, allowing Podman to connect other containers to the pod.
+- It enables starting and stopping containers within the pod while keeping the pod running.
+- It manages pod-level attributes such as port bindings, cgroup-parent values, and kernel namespaces
+
+It's important to note that once a pod is created, the attributes assigned to the infra container cannot be changed.  
+This means that if you need to modify things like port bindings, you would need to recreate the pod with the new desired config.
+
+## Feeding the pod
+
+Let's pour some stuff into our new pod: `podman run -d --pod webapp --name redis redis`  
+This cmd will run a redis container named 'redis' inside our 'webapp' pod.  
+
+As you can see, our pod is now running 2 containers:  
+![image](https://github.com/user-attachments/assets/8af189d7-a882-4aa7-8789-e78f2bd41119)  
+
+We can also run `podman pod inspect webapp` to see more detailed information:  
+![image](https://github.com/user-attachments/assets/1189daf3-d692-476b-820a-e16ca66fe9ab)
+
+## Communication between containers within a pod
+
+The nice thing about containers in a pod is that they don't have    
+`podman run --rm`
+- The `--rm` flag is 
 
 
 @7/12
