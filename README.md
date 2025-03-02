@@ -258,7 +258,7 @@ First, we need to modify our `deployment.yaml` file:
 - Add resource requests and limits for both containers to ensure proper scheduling and resource allocation
 - Add environment variables for the PostgreSQL container to set up the database properly
 
-Here's the updated .yaml file with these changes:
+Here's the updated .yaml file:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -327,7 +327,10 @@ Remember to create both the `Secret` and the `PersistentVolumeClaim` before appl
 - Once our .yaml file is ready, let's make sure minikube is on with `minikube status`
 - make sure the cluster is empty: `kubectl get pods`
 - deploy the pod: `kubectl apply -f deployment.yaml`
-  - for the sake of identification, we should name our .yaml files differently, such as `dev_deployment.yaml` and `prod_deployment.yaml` 
+
+In order to help differentiate our .yaml files, we should give them different names, such as `dev_deployment.yaml` and `prod_deployment.yaml`  
+
+To follow the logs of a specific container in the pod: `kubectl logs <podName> -c <containerName> --follow`
 
 
-
+@11/12
