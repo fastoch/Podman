@@ -247,7 +247,9 @@ We now have 2 pods running 3 containers each:
 We can also get the names of containers running inside each pod:  
 ![image](https://github.com/user-attachments/assets/293b002f-48c1-4d80-8786-b0bf1f5de32e)
 
-## Deploy the pod to a K8s cluster (from local dev environment to production)
+## Deploy the pod to a K8s cluster (from local development environment to production)
+
+A Kubernetes cluster is a group of nodes (virtual or physical) that run Kubernetes, a system for automating the deployment and management of containerized applications.
 
 ### Review and modify the .yaml file
 
@@ -332,5 +334,21 @@ In order to help differentiate our .yaml files, we should give them different na
 
 To follow the logs of a specific container in the pod: `kubectl logs <podName> -c <containerName> --follow`
 
+---
 
-@11/12
+# Podman Desktop
+
+All of the above was applied using Podman CLI.  
+But Podman Desktop has some extremely useful extensions, like being able to use:
+- `podman-compose` with existing setups out of the box
+- `kubectl`
+
+![image](https://github.com/user-attachments/assets/adf365eb-471c-455e-84cd-bdc1d61b4576)
+
+Under the Containers tab, we get all of the containers in the system.  
+Choosing a running container allows us to:
+- monitor the logs
+- inspect the config
+- get a K8s manifest ready for deployment
+
+But beyond all that, there's a terminal shell attached to the container which we can use directly for debugging purposes.
