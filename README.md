@@ -113,7 +113,9 @@ On the opposite, Docker needs a bunch of processes to run containers.
 As its name indicates, Podman lets you gather multiple containers in **pods** and have them run together, which is something Docker can't do.  
 
 To access these pods through the CLI, podman comes with the `podman pod` command.  
-The `podman pod ps` command can be used to list information about pods we have created.
+The `podman pod ps` command can be used to list information about pods we have created.  
+
+To restart a pod: `podman pod start <pod_name>`
 
 ## Our first podman pod
 
@@ -147,9 +149,38 @@ We can also run `podman pod inspect webapp` to see more detailed information:
 
 ## Communication between containers within a pod
 
-The nice thing about containers in a pod is that they don't have    
-`podman run --rm`
-- The `--rm` flag is 
+The nice thing about containers in a pod is that they don't have to have anything special to communicate with each other.  
+They can basically ping each other using `localhost`.  
+
+Let's run a third container in our pod:
+`podman run --rm --pod webapp redis redis-cli -h localhost SET mykey "Hello from Redis"`
+- The `--rm` flag is to make sure the container is deleted as soon as it's exited
+- this container will run Redis (Remote dictionary server, functions as a distributed key-value database)
+- we use `redis-cli` with `localhost` as the target host to send a redis command
+- our redis command writes a key name 'mykey' which will hold the value "Hello from Redis"
+
+Now we can run another command to read the key:  
+`podman -run --rm --pod webapp redis redis-cli -h localhost GET mykey`  
+
+![image](https://github.com/user-attachments/assets/8e60c7f7-6244-4396-b20e-ae2e4a8a8441)  
+
+## Attaching a shell to a container running inside a pod
+
+`podman run -it -d --pod webapp --name api alpine sh`  
+- This will run a **third** container named 'api' inside our 'webapp' pod.
+- This container will be built from the alpine image (lightweight Linux OS)
+- The `-it` flag and `sh` allow us to attach a shell to the 'api' container
+- The `-d` flag is for running the container in 'detached' mode so we don't leave the terminal
+
+We can then `exec` into this container via `podman exec -it api sh`, which allows us to use the shell attached to it.  
+![image](https://github.com/user-attachments/assets/2c286b78-c254-4c36-9a69-b9cfee2587ef)  
+
+**Note**: we use the old shell because Alpine doesn't come with bash  
+
+We can then install redis in our Alpine container, and send a Redis PING to localhost that comes back with PONG:  
+![image](https://github.com/user-attachments/assets/d8530874-64de-4c84-85ff-a195f981b945)
 
 
-@7/12
+
+
+@8/12
