@@ -194,6 +194,7 @@ We can now run the `podman generate kube` command and save the output to a .yaml
 `podman generate kube web db | save deployment.yaml`
 
 We can now remove our 2 containers with `podman rm -f web db`.  
+
 And we can use our .yaml file to recreate our 2 containers inside a pod: `podman play kube deployment.yaml`  
 ![image](https://github.com/user-attachments/assets/2ec78888-1db2-4953-bfec-7aff0d164508)  
 
@@ -203,7 +204,4 @@ We now have 2 pods running 3 containers each:
 We can also get the names of containers running inside each pod:  
 ![image](https://github.com/user-attachments/assets/293b002f-48c1-4d80-8786-b0bf1f5de32e)
 
-Right now, our containers are running in a pod locally.  
-To deploy them in a K8s cluster, 
 
-@10/12
