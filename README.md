@@ -126,7 +126,7 @@ You can notice that the pod is already running something, despite you haven't to
 That's because every pod, by default, runs an internal **infra container**.  
 This infra container is a lightweight container used to **coordinate the shared kernel namespace** of a pod.  
 
-## The infra container
+### The infra container
 
 The infra container serves several important purposes:
 - It holds the namespaces associated with the pod, allowing Podman to connect other containers to the pod.
@@ -180,7 +180,30 @@ We can then `exec` into this container via `podman exec -it api sh`, which allow
 We can then install redis in our Alpine container, and send a Redis PING to localhost that comes back with PONG:  
 ![image](https://github.com/user-attachments/assets/d8530874-64de-4c84-85ff-a195f981b945)
 
+## If you're using or plan to use K8s
 
+The next feature is a real **killer**.  
 
+Let's say that we want to create a separate new application with nginx and postgres:
+```bash
+podman run -d --name web nginx
+podman run -d --name db postgres
+```
 
-@8/12
+We can now run the `podman generate kube` command and save the output to a .yaml file:  
+`podman generate kube web db | save deployment.yaml`
+
+We can now remove our 2 containers with `podman rm -f web db`.  
+And we can use our .yaml file to recreate our 2 containers inside a pod: `podman play kube deployment.yaml`  
+![image](https://github.com/user-attachments/assets/2ec78888-1db2-4953-bfec-7aff0d164508)  
+
+We now have 2 pods running 3 containers each:  
+![image](https://github.com/user-attachments/assets/a1d304f7-7093-4274-8d2c-4718babe1bbd)  
+
+We can also get the names of containers running inside each pod:  
+![image](https://github.com/user-attachments/assets/293b002f-48c1-4d80-8786-b0bf1f5de32e)
+
+Right now, our containers are running in a pod locally.  
+To deploy them in a K8s cluster, 
+
+@10/12
