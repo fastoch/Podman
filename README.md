@@ -3,6 +3,7 @@ Stop Using Docker. Use Free and Open Source Software (FOSS) instead.
 
 ## Resources
 - https://www.youtube.com/watch?v=Z5uBcczJxUY&t=72s
+- https://www.youtube.com/watch?v=Gft9e1o3Hgg&t=181s
 - https://podman.io/docs/installation
 
 ---
@@ -32,7 +33,7 @@ Podman is also **daemonless**, which provides:
 - improved resource management
 - greater flexibility
 
-In addition to these advantages, Podman offers compatibility with Docker-based workflows, as it suppors OCI and Docker images.  
+In addition to that, Podman offers compatibility with Docker-based workflows, as it's OCI-compliant and supports Docker images.  
 
 Being **daemonless** means that Podman operates without a central daemon or background service.  
 Instead, it communicates directly with the Linux kernel and container runtime interface.  
@@ -40,6 +41,25 @@ Instead, it communicates directly with the Linux kernel and container runtime in
 Podman uses **runC** as its **default container runtime**.  
 runC is an OCI (Open Container Initiative) compliant runtime that is used to launch containers.  
 However, Podman is **flexible** and allows users to change the runtime if desired.  
+
+## Podman benefits over Docker
+
+### 1) Security
+
+By default, Podman containers run without a root user, they are **rootless**.  
+So when a container is compromised, the attacker can only access data within that container, not the host and the other containers.
+
+### 2) Auditability
+
+All commands are forked and run independently, you can have multiple users running different commands and still know who executed what.  
+All individual processes are recorded and stem from a certain user, meaning Podman's logs record a user ID, allowing for auditability.  
+
+Whereas Docker uses a client/server model where each command triggers the client to send a request to the server (the Docker daemon).  
+The Docker daemon is a child of the init system, causing all systemd, daemon, and container processes to share the same user ID.
+
+### 3) Podman's Kubeify feature
+
+
 
 ---
 
